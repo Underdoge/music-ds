@@ -113,8 +113,7 @@ original_data = songs_df.select(
                                'Size (bytes)'))
 )
 st.dataframe(original_data, hide_index=True)
-st.dataframe(songs_df.select(
-    pl.col('Size')))
+
 total_original_size = songs_df.select(
     pl.col('Size').sum())
 st.write('Total storage size (GBs):',
@@ -143,11 +142,8 @@ st.write("New bit rate (kb/s):", bit_rate)
 new_df = songs_independent_vars.with_columns(
     pl.col('Bit Rate').map_elements(lambda x: bit_rate)
 )
-st.write(songs_independent_vars.describe())
-st.dataframe(songs_independent_vars, hide_index=True)
 
-predicted_size = model.predict(songs_independent_vars)
+predicted_size = model.predict(new_df)
 
-st.write(predicted_size)
-st.write("Total storage size (GBs): ",
+st.write("Total predicted storage size (GBs): ",
          round(predicted_size.sum()/(1024*1024*1024), 2))
