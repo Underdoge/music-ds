@@ -20,10 +20,7 @@ different bit rates.
 
 They provided us their current music files, and we were able to create a model\
  to predict the required total storage size if all the songs were converted to\
- different bit rates provided by the company.
-
-Here we can play with the model and see how the required storage will change \
-depending on the selected bit rate.
+ the same bit rate.
 """
 )
 
@@ -126,6 +123,9 @@ bit_rate = st.sidebar.slider("Bit rate (kb/s)", 24, 2822, 320)
 st.markdown(
     """
 ### Storage Size Prediction
+Here we can play with the model and see how the required storage will change \
+depending on the selected bit rate.
+
 Using the slider on the left, we can choose different bit rates and see their \
 total predicted storage size, so the company can make the best decision \
 according to their budget.
