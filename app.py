@@ -1,11 +1,12 @@
 import streamlit as st
 import polars as pl
 from joblib import load
+from util.on_change import update_slider, update_numin
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import RobustScaler
 
-
+# "st.session_state object:", st.session_state
 
 st.markdown(
     """
@@ -99,11 +100,13 @@ st.markdown(
     """
 ### Original Data
 
-Here we can see their original songs duration, size and bit \
-rate, and their total storage size requirement.
+Here we can see their original songs duration, bit rate and \
+size, and their total storage size requirement.
 """)
 
 original_data = songs_df.select(
+    pl.col('Artist'),
+    pl.col('Name'),
     (pl.col('Total Time')/1000).alias('Duration (seconds)'),
     pl.col('Bit Rate').alias('Bit Rate (kb/s)')).with_columns(
                            songs_df.select(pl.col('Size').alias(
@@ -118,7 +121,15 @@ st.write('Total storage size (GBs):',
 
 st.sidebar.title("Music storage size prediction :notes:")
 
-bit_rate = st.sidebar.slider("Bit rate (kb/s)", 24, 2822, 320)
+bit_rate = st.sidebar.number_input(
+    "Bit Rate (kb/s)", step=64, key='numeric', min_value=64, max_value=2816,
+    on_change=update_slider)
+
+slider_val = st.sidebar.slider(
+    "Bit Rate (kb/s)", min_value=64, max_value=2816, step=64,
+    label_visibility='hidden',
+    key='slider',
+    on_change=update_numin)
 
 st.markdown(
     """
@@ -126,9 +137,9 @@ st.markdown(
 Here we can play with the model and see how the required storage will change \
 depending on the selected bit rate.
 
-Using the slider on the left, we can choose different bit rates and see their \
-total predicted storage size, so the company can make the best decision \
-according to their budget.
+Using the "Bit Rate (kb/s) slider or the input on the left, we can choose \
+different bit rates and see their total predicted storage size, so the \
+company can make the best decision according to their budget.
 """
 )
 
