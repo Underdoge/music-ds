@@ -153,6 +153,18 @@ fig = px.scatter_3d(
 )
 st.plotly_chart(fig, theme=None)
 
+st.markdown(
+    """
+By manipulating the previous 3D chart, we can see that the size of a song most
+of the times increases proportionally to its duration and its bit rate. The
+song with the biggest size (represented by the yellow dot) also has the
+longest duration of all songs, and the blue dots have the smallest size
+because they also have either short durations and/or low bit rates.
+
+This gives us a hint we can predict the size of a song by fitting a linear
+regression using its duration and bit rate.
+""")
+
 st.sidebar.title("Music storage size prediction :notes:")
 
 # Create sidebar input and sidebar linked to each other with update functions
@@ -170,12 +182,10 @@ slider_val = st.sidebar.slider(
 st.markdown(
     """
 ### Storage Size Prediction
-Here we can play with the model and see how the required storage will change \
-depending on the selected bit rate.
-
-Using the "Bit Rate (kb/s) slider or the input on the left, we can choose \
-different bit rates and see their total predicted storage size, so the \
-company can make the best decision according to their budget.
+Now we can play with the model and see how the total predicted storage will \
+update automatically depending on the selected bit rate by using the "Bit \
+Rate (kb/s)" slider or the input field on the left sidebar, so the company \
+can make the best decision according to their budget.
 """
 )
 
