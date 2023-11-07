@@ -2,9 +2,9 @@ import streamlit as st
 import polars as pl
 from joblib import load
 from util.on_change import update_slider, update_numin
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.preprocessing import RobustScaler
+from util.scaler import scale
+import plotly.express as px
+import numpy as np
 
 # "st.session_state object:", st.session_state
 
@@ -38,11 +38,13 @@ genres = songs_df.select(
     .map_elements(
         lambda x: "Electronic" if x == "Electronica" else x)
     .map_elements(
-        lambda x: "Electronic Pop" if x in ["Pop Electronica", "Electronica / Pop"] else x)
+        lambda x: "Electronic Pop" if x in ["Pop Electronica",
+                                            "Electronica / Pop"] else x)
     .map_elements(
         lambda x: "Indie" if x == "indie" else x)
     .map_elements(
-        lambda x: "Indie Rock" if x in ["Rock/Indie", "Indie/Rock", "General Indie Rock"] else x)
+        lambda x: "Indie Rock" if x in ["Rock/Indie", "Indie/Rock",
+                                        "General Indie Rock"] else x)
     .map_elements(
         lambda x: "Miscellaneous" if x == "misc" else x)
     .map_elements(
@@ -50,8 +52,10 @@ genres = songs_df.select(
     .map_elements(
         lambda x: "Thrash Metal" if x == "Thrash Metal" else x)
     .map_elements(
-        lambda x: "Alt Rock" if x in ["Alt. Rock", "Alternative Rock", "Rock alternativo",
-                                      "Alternative, Rock", "General Alternative Rock"] else x)
+        lambda x: "Alt Rock" if x in ["Alt. Rock", "Alternative Rock",
+                                      "Rock alternativo",
+                                      "Alternative, Rock",
+                                      "General Alternative Rock"] else x)
     .map_elements(
         lambda x: "Brit Pop" if x == "Brit-pop" else x)
     .map_elements(
@@ -61,7 +65,8 @@ genres = songs_df.select(
     .map_elements(
         lambda x: "Folk" if x == "General Folk" else x)
     .map_elements(
-        lambda x: "Rock" if x in ["General Rock", "Rock En General", "Rock en general", "Rock @",
+        lambda x: "Rock" if x in ["General Rock", "Rock En General",
+                                  "Rock en general", "Rock @",
                                   "rock"] else x)
     .map_elements(
         lambda x: "Heavy Metal" if x == "Rock Duro Y Heavy" else x)
@@ -74,11 +79,13 @@ genres = songs_df.select(
     .map_elements(
         lambda x: "Chiptune" if x == "chiptune" else x)
     .map_elements(
-        lambda x: None if x in ["genre", "default", ".", "(255)", "Other"] else x)
+        lambda x: None
+        if x in ["genre", "default", ".", "(255)", "Other"] else x)
     .map_elements(
         lambda x: "Unclassifiable" if x == "General Unclassifiable" else x)
     .map_elements(
-        lambda x: "Soft Rock / Alternative Folk / Folk / Rock" if x == "soft rock/alternative folk/folk/rock" else x)
+        lambda x: "Soft Rock / Alternative Folk / Folk / Rock"
+        if x == "soft rock/alternative folk/folk/rock" else x)
     .alias("Genre")
 ).to_series()
 
@@ -96,6 +103,8 @@ songs_df.drop_in_place("Library Folder Count")
 songs_df.drop_in_place("Kind")
 songs_df.drop_in_place("Location")
 
+# End of Data Imputation
+
 st.markdown(
     """
 ### Original Data
@@ -103,6 +112,8 @@ st.markdown(
 Here we can see their original songs duration, bit rate and \
 size, and their total storage size requirement.
 """)
+
+# Display main original data's columns
 
 original_data = songs_df.select(
     pl.col('Artist'),
@@ -114,19 +125,44 @@ original_data = songs_df.select(
 )
 st.dataframe(original_data, hide_index=True)
 
+# Display original dataset's total size
+
 total_original_size = songs_df.select(
     pl.col('Size').sum())
 st.write('Total storage size (GBs):',
          round(total_original_size.to_numpy()[0][0]/(1024*1024*1024), 2))
 
+st.markdown(
+    """
+### Visualization
+Now let's see an interactive 3D chart of the 'Size, 'Total Time' and
+'Bit Rate' columns.
+""")
+
+data = songs_df.select(pl.col('Bit Rate'), pl.col('Size')).with_columns(
+    songs_df.select((pl.col('Total Time')/1000).alias('Duration')))
+
+# Plot original data
+
+fig = px.scatter_3d(
+    data,
+    x='Duration',
+    y='Bit Rate',
+    z='Size',
+    color='Size'
+)
+st.plotly_chart(fig, theme=None)
+
 st.sidebar.title("Music storage size prediction :notes:")
 
+# Create sidebar input and sidebar linked to each other with update functions
+
 bit_rate = st.sidebar.number_input(
-    "Bit Rate (kb/s)", step=64, key='numeric', min_value=64, max_value=2816,
+    "Bit Rate (kb/s)", step=64, key='numeric', min_value=128, max_value=2816,
     on_change=update_slider)
 
 slider_val = st.sidebar.slider(
-    "Bit Rate (kb/s)", min_value=64, max_value=2816, step=64,
+    "Bit Rate (kb/s)", min_value=128, max_value=2816, step=64,
     label_visibility='hidden',
     key='slider',
     on_change=update_numin)
@@ -147,6 +183,8 @@ company can make the best decision according to their budget.
 
 model = load('models/music_size.joblib')
 
+# Separate variables
+
 songs_independent_vars = songs_df.select((pl.col('Total Time')/1000),
                                          pl.col('Bit Rate'))
 st.write("New bit rate (kb/s):", bit_rate)
@@ -154,7 +192,37 @@ new_df = songs_independent_vars.with_columns(
     pl.col('Bit Rate').map_elements(lambda x: bit_rate)
 )
 
-predicted_size = model.predict(new_df)
+# Scale dataset
+
+scaled_new_df = scale(new_df)
+
+# Predict new sizes
+
+predicted_size = model.predict(scaled_new_df)
+
+# Display predicted total size
 
 st.write("Total predicted storage size (GBs): ",
          round(predicted_size.sum()/(1024*1024*1024), 2))
+
+# Fix negative sizes
+
+size_series = pl.Series("Size", np.concatenate(predicted_size)).map_elements(
+    lambda x: -x if x < 0 else x
+)
+
+# Plot results
+
+new_df = new_df.with_columns(
+    size_series
+).rename({"Total Time": "Duration"})
+
+fig_2 = px.scatter_3d(
+    new_df,
+    x='Duration',
+    y='Bit Rate',
+    z='Size',
+    color='Size'
+)
+
+st.plotly_chart(fig_2, theme=None)
