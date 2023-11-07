@@ -68,7 +68,7 @@ st.write('Total storage size (GBs):',
 st.markdown(
     """
 ### Visualization
-Now let's see an interactive 3D chart of the 'Size, 'Total Time' and
+Now let's see an interactive 3D chart of the 'Size', 'Total Time' and
 'Bit Rate' columns.
 """)
 
