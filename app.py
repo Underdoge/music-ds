@@ -20,9 +20,9 @@ st.markdown(
 ### Estimating the required storage for a music \
 streaming company.
 
-A music company approached us to help them estimate how much space they would \
-require to store their music files if they offered them to their users in \
-different bit rates.
+A music streaming company approached us to help them estimate how much space \
+they would require to store their music files if they offered them to their \
+users in different bit rates.
 
 They provided us their current music files, and we were able to create a model\
  to predict the required total storage size if all the songs were converted to\
