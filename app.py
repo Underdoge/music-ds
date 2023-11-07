@@ -15,7 +15,7 @@ import numpy as np
 
 st.markdown(
     """
-# Music storage size prediction :notes:
+# Music library storage size prediction :notes:
 ## Hypothetical case study
 ### Estimating the required storage for a music \
 streaming company.
@@ -98,7 +98,7 @@ This gives us a hint we can predict the size of a song by fitting a linear
 regression using its duration and bit rate.
 """)
 
-st.sidebar.title("Music storage size prediction :notes:")
+st.sidebar.title("Music library storage size prediction :notes:")
 
 # Create sidebar input and sidebar linked to each other with update functions
 
