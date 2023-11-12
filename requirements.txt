@@ -1,4 +1,6 @@
+streamlit
 tensorflow
+keras
 joblib
 polars
 scikit-learn
