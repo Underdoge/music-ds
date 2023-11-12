@@ -183,7 +183,7 @@ st.plotly_chart(fig, theme=None)
 
 st.markdown(
     """
-By manipulating the previous 3D chart, we can see that the size of a song 
+By manipulating the previous 3D chart, we can see that the size of a song
 increases proportionally to its duration and its bit rate. The song with the
 biggest size (represented by the yellow dot) also has the longest duration of
 all songs, and the blue dots have the smallest size because they also have
