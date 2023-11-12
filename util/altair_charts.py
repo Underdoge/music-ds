@@ -131,9 +131,9 @@ def songs_by_bitrate(songs_df: DataFrame) -> Chart:
     songs_by_bitrate = songs_df.group_by('Bit Rate').agg(
         (pl.count('Name').alias('Count'))
     ).select(pl.col('Bit Rate').alias('Bitrate'), pl.col('Count'))
-    top_15_bitrates = songs_by_bitrate.top_k(5, by="Count")
+    top_5_bitrates = songs_by_bitrate.top_k(5, by="Count")
     return alt.Chart(
-        top_15_bitrates,
+        top_5_bitrates,
         title="Top 5 Bit Rates").mark_arc(innerRadius=70).encode(
         color=alt.Color("Bitrate", title="Bit Rate (kb/s)", type="nominal",
                         sort='ascending',

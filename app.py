@@ -341,7 +341,7 @@ Here's the model's Training History chart, we trained it for 6 epochs.
 
 # Plot our model's training history
 
-accuracy = history['accuracy']
+accuracy = history.history['accuracy']
 epochs = np.arange(len(accuracy))
 
 fig = px.line(
