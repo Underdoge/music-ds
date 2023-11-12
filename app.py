@@ -328,7 +328,7 @@ testing_x, validation_x, testing_y, validation_y = train_test_split(
 
 # Load our model and its training history
 
-# history = load('models/training_history.joblib')
+history = load('models/training_history.joblib')
 model = load('models/genre_prediction.joblib')
 
 st.markdown(
@@ -340,17 +340,17 @@ Here's the model's Training History chart, we trained it for 6 epochs.
 
 # Plot our model's training history
 
-# accuracy = history.history['accuracy']
-# epochs = np.arange(len(accuracy))
+accuracy = history.history['accuracy']
+epochs = np.arange(len(accuracy))
 
-# fig = px.line(
-#     x=epochs,
-#     y=accuracy,
-#     title='Training History',
-#     labels=dict(x='Epochs', y='Accuracy')
-# )
+fig = px.line(
+    x=epochs,
+    y=accuracy,
+    title='Training History',
+    labels=dict(x='Epochs', y='Accuracy')
+)
 
-# st.plotly_chart(fig)
+st.plotly_chart(fig)
 
 st.markdown(
     """
