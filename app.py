@@ -5,6 +5,7 @@ folder.
 """
 import streamlit as st
 import polars as pl
+from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -328,8 +329,8 @@ testing_x, validation_x, testing_y, validation_y = train_test_split(
 
 # Load our model and its training history
 
-history = load('models/training_history.joblib')
-model = load('models/genre_prediction.joblib')
+history = np.load('models/training_history.npy', allow_pickle='TRUE').item()
+model = load_model('models/genre_prediction.h5')
 
 st.markdown(
     """
