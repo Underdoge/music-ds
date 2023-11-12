@@ -2,7 +2,6 @@
 functions for our streamlit app.
 """
 import librosa
-import tensorflow as tf
 import numpy as np
 from numpy import mean, var, array
 import streamlit as st
@@ -57,7 +56,7 @@ def feature_extraction(filename: str) -> array:
     return np.array(all_features)
 
 
-def pick_random_song(model: tf.keras.Sequential,
+def pick_random_song(model,
                      standard_scaler: StandardScaler, labels: list) -> None:
     """ This function will pick a random sample song and use the 'model' to
     predict its genre, extract the song's musical features using the
