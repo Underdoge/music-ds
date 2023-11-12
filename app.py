@@ -327,7 +327,7 @@ training_x, rest_x, training_y, rest_y = train_test_split(
 testing_x, validation_x, testing_y, validation_y = train_test_split(
     rest_x, rest_y, train_size=test_count)
 
-# Load our model and its training history
+# Load our model and its training history using np.load
 
 history = np.load('models/training_history.npy', allow_pickle='TRUE').item()
 model = load_model('models/genre_prediction.keras')
