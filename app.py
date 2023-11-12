@@ -5,7 +5,6 @@ folder.
 """
 import streamlit as st
 import polars as pl
-from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -327,10 +326,10 @@ training_x, rest_x, training_y, rest_y = train_test_split(
 testing_x, validation_x, testing_y, validation_y = train_test_split(
     rest_x, rest_y, train_size=test_count)
 
-# Load our model and its training history using np.load
+# Load our model and its training history
 
-history = np.load('models/training_history.npy', allow_pickle='TRUE').item()
-model = load_model('models/genre_prediction.keras')
+history = load('models/training_history.joblib')
+model = load('models/genre_prediction.joblib')
 
 st.markdown(
     """
@@ -341,7 +340,7 @@ Here's the model's Training History chart, we trained it for 6 epochs.
 
 # Plot our model's training history
 
-accuracy = history['accuracy']
+accuracy = history.history['accuracy']
 epochs = np.arange(len(accuracy))
 
 fig = px.line(
