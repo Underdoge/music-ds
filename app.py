@@ -105,10 +105,11 @@ popular one is again 320 kb/s.
 """
 )
 base = top_5_genre_count_per_avg_bitrate(songs_df)
-c1 = base.mark_text(radiusOffset=10).encode(
+c1 = base.mark_arc(innerRadius=30, strokeWidth=0)
+c2 = base.mark_text(radiusOffset=10).encode(
         text='Genre'
 )
-st.altair_chart(base + c1, theme=None)
+st.altair_chart(c1 + c2, theme=None)
 
 # Import scrobbles dataset
 

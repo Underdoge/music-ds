@@ -191,7 +191,7 @@ def top_5_genre_count_per_avg_bitrate(songs_df: DataFrame) -> Chart:
         alt.Radius("Genre").scale(type="sqrt", rangeMin=20),
         color=alt.Color("Average Bit Rate:N",
                         scale=alt.Scale(scheme='plasma'))
-    ).mark_arc(innerRadius=30, strokeWidth=0)
+    )
 
 
 def top_10_most_played_songs(scrobbles_df: DataFrame) -> Chart:
