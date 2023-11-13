@@ -8,7 +8,7 @@ import polars as pl
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
 from joblib import load
 from util.on_change import update_slider, update_numin
 from util.scaler import scale
@@ -397,13 +397,16 @@ of the validation sample songs.
 
 model.evaluate(validation_x, validation_y, batch_size=128)
 predictions_y = np.argmax(model.predict(validation_x, batch_size=128), axis=1)
-validation_confusion_matrix = confusion_matrix(validation_y, predictions_y)
-validation_df = pl.DataFrame(validation_confusion_matrix,
-                             schema=labels)
-validation_df = pl.DataFrame(pl.Series("Genre", labels)).with_columns(
-    validation_df
-)
-st.dataframe(validation_df, hide_index=True)
+validation_y_labels = []
+predictions_y_labels = []
+for val in validation_y:
+    validation_y_labels.append(labels[val])
+for val in predictions_y:
+    predictions_y_labels.append(labels[val])
+disp = ConfusionMatrixDisplay.from_predictions(validation_y_labels,
+                                               predictions_y_labels)
+disp.ax_.set_xticklabels(disp.ax_.get_xticklabels(), rotation=45)
+st.pyplot(disp.figure_)
 
 st.markdown(
     """
@@ -415,13 +418,16 @@ And here's the one for the testing sample songs.
 
 model.evaluate(testing_x, testing_y, batch_size=128)
 predictions_y = np.argmax(model.predict(testing_x, batch_size=128), axis=1)
-testing_confusion_matrix = confusion_matrix(testing_y, predictions_y)
-testing_df = pl.DataFrame(testing_confusion_matrix,
-                          schema=labels)
-testing_df = pl.DataFrame(pl.Series("Genre", labels)).with_columns(
-    testing_df
-)
-st.dataframe(testing_df, hide_index=True)
+testing_y_labels = []
+predictions_y_labels = []
+for val in testing_y:
+    testing_y_labels.append(labels[val])
+for val in predictions_y:
+    predictions_y_labels.append(labels[val])
+disp = ConfusionMatrixDisplay.from_predictions(testing_y_labels,
+                                               predictions_y_labels)
+disp.ax_.set_xticklabels(disp.ax_.get_xticklabels(), rotation=45)
+st.pyplot(disp.figure_)
 
 st.markdown(
     """
