@@ -281,9 +281,6 @@ st.markdown(
 Finally, the music streaming company wanted to automatically classify new
 songs in their library according to their genre.
 
-For that, we built a genre classification neural network model using their
-sample songs of each music genre they have in their library.
-
 Our first step was extracting the audio features of the sample songs, here's
 how they look like after extraction.
 """
@@ -335,7 +332,19 @@ model = load_model('models/genre_prediction.h5')
 st.markdown(
     """
 ### Music Genre Prediction Model
-Here's the model's Training History chart, we trained it for 6 epochs.
+We built a genre classification neural network model and trained it using the
+sample songs of each genre.
+
+Our model has 1 Dense input layer, 1 hidden Dense layer, and 1 Dense output
+layer, with 2 hidden Dropout layers in-between to prevent overfitting.
+"""
+)
+
+model.summary(print_fn=lambda x: st.text(x))
+
+st.markdown(
+    """
+We trained our model for 20 epochs, here's the model's Training History chart.
 """
 )
 
@@ -353,13 +362,34 @@ fig = px.line(
 
 st.plotly_chart(fig)
 
+# Plot the Loss History
+
 st.markdown(
     """
+And here's the model's Loss History chart.
+"""
+)
+
+loss = history.history['loss']
+epochs2 = np.arange(len(loss))
+
+fig2 = px.line(
+    x=epochs2,
+    y=loss,
+    title='Loss',
+    labels=dict(x='Epochs', y='Loss')
+)
+
+st.plotly_chart(fig2)
+
+st.markdown(
+    """
+### Testing our model
 After building our model, we wanted to see how well it was predicting the
 sample songs' genre.
 
-Here we can see a confusion matrix of the validation sample songs' predicted
-genre vs their true genre.
+Here we can see a confusion matrix of the predicted genres vs the true genres
+of the validation sample songs.
 """
 )
 
@@ -374,7 +404,6 @@ validation_df = pl.DataFrame(pl.Series("Genre", labels)).with_columns(
     validation_df
 )
 st.dataframe(validation_df, hide_index=True)
-# st.altair_chart(confusion_matrix_display(validation_df))
 
 st.markdown(
     """
@@ -393,14 +422,11 @@ testing_df = pl.DataFrame(pl.Series("Genre", labels)).with_columns(
     testing_df
 )
 st.dataframe(testing_df, hide_index=True)
-# st.altair_chart(confusion_matrix_display(testing_df))
-
 
 st.markdown(
     """
-### Testing our model
-Finally, here we can test our model by predicting the genre of a randomly
-selected song by pressing the "Predict" button on the sidebar.
+Finally, by pressing the "Predict" button on the left sidebar we can test our
+model and predict the genre of a randomly selected song.
 """)
 
 st.sidebar.title("Music genre prediction :guitar:")
