@@ -16,7 +16,7 @@ def top_10_genres_chart(songs_df: DataFrame) -> Chart:
     their genre.
 
     Returns:
-        Chart: The generated top 10 genres chart.
+        Chart: The generated altair chart.
     """
 
     songs_by_genre = songs_df.select(
@@ -51,8 +51,9 @@ def top_10_avg_durations_by_genre(songs_df: DataFrame) -> Chart:
     their genre and duration.
 
     Returns:
-        Chart: The generated top 10 average durations per genre chart.
+        Chart: The generated altair chart.
     """
+
     avg_duration_per_genre = songs_df.group_by('Genre').agg(
         (pl.mean('Total Time')/60000).round(1).alias('Minutes')
     )
@@ -87,6 +88,17 @@ def top_10_avg_durations_by_genre(songs_df: DataFrame) -> Chart:
 
 
 def songs_per_year(songs_df: DataFrame) -> Chart:
+    """ This function returns an altair Chart of all the songs arranged by
+    year.
+
+    Args:
+        songs_df (DataFrame): A polars DataFrame containing the songs and
+    their release year.
+
+    Returns:
+        Chart: The generated altair chart.
+    """
+
     songs_per_year = songs_df.select(
         pl.col('Name').alias('Songs'),
         pl.col('Year')
@@ -128,6 +140,17 @@ def songs_per_year(songs_df: DataFrame) -> Chart:
 
 
 def songs_by_bitrate(songs_df: DataFrame) -> Chart:
+    """ This function returns an altair Chart with the top 5 most used bit
+    rates.
+
+    Args:
+        songs_df (DataFrame): A polars DataFrame containing the songs with
+    their bit rate.
+
+    Returns:
+        Chart: The generated altair chart.
+    """
+
     songs_by_bitrate = songs_df.group_by('Bit Rate').agg(
         (pl.count('Name').alias('Count'))
     ).select(pl.col('Bit Rate').alias('Bitrate'), pl.col('Count'))
@@ -143,6 +166,17 @@ def songs_by_bitrate(songs_df: DataFrame) -> Chart:
 
 
 def top_5_genre_count_per_avg_bitrate(songs_df: DataFrame) -> Chart:
+    """ This function returns an altair Chart with the number of genres
+    using the top 5 average bit rates.
+
+    Args:
+        songs_df (DataFrame): A polars DataFrame containing the songs with
+    their genre and bit rate.
+
+    Returns:
+        Chart: The generated altair chart.
+    """
+
     avg_bitrate_per_genre = songs_df.group_by('Genre').agg(
         (pl.mean('Bit Rate').alias('Average Bit Rate'))
     )
@@ -161,6 +195,17 @@ def top_5_genre_count_per_avg_bitrate(songs_df: DataFrame) -> Chart:
 
 
 def top_10_most_played_songs(scrobbles_df: DataFrame) -> Chart:
+    """ This function returns an altair Chart with the top 10 most played
+    songs.
+
+    Args:
+        songs_df (DataFrame): A polars DataFrame containing a time series
+    of every times a song was played.
+
+    Returns:
+        Chart: The generated altair chart.
+    """
+
     scrobbles_df = scrobbles_df.with_columns(
         (pl.col('track') + " - " + pl.col('artist')).alias("Song - Artist")
     )
@@ -191,11 +236,3 @@ def top_10_most_played_songs(scrobbles_df: DataFrame) -> Chart:
                                                     offset=1)]))
                      )
     ).properties(width=600)
-
-
-def confusion_matrix_display(source: DataFrame) -> Chart:
-    return alt.Chart(source).mark_rect().encode(
-        x='blues:O',
-        y='blues:O',
-        color='blues:Q'
-    )
