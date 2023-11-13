@@ -26,7 +26,7 @@ import numpy as np
 
 st.markdown(
     """
-# Data Science for Music :notes:
+# Data Science for Music :guitar: :notes:
 ## Hypothetical case study
 
 A music streaming company approached us to help them estimate analyze their
@@ -431,7 +431,7 @@ st.pyplot(disp.figure_)
 
 st.markdown(
     """
-Finally, by pressing the "Predict" button on the left sidebar we can test our
+Finally, by pressing the Predict button on the left sidebar we can test our
 model and predict the genre of a randomly selected song.
 """)
 
