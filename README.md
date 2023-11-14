@@ -1,5 +1,5 @@
 # music-ds
-## Data Science for Music
+## Data Science for Music 🎸🎶
 ## Final Project for the Código Facilito's 2023 Data Science Bootcamp
 
 # Installing the Streamlit App
