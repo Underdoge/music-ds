@@ -1,6 +1,7 @@
 # music-ds
 ## Data Science for Music 🎸🎶
 ## Final Project for the Código Facilito's 2023 Data Science Bootcamp
+<img width="800" alt="image" src="https://github.com/Underdoge/music-ds/assets/12192446/6009b949-9d78-4ab9-b64f-0665644e862b">
 
 # Installing the Streamlit App
 Open up a Terminal (macOS/Linux) or PowerShell (Windows) and enter the following commands:
