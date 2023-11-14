@@ -43,7 +43,8 @@ songs of the genres they have in their library.
 
 # Import dataset
 
-original_df = pl.read_csv('data/music_library_export.csv')
+original_df = pl.read_csv('data/music_library_export.csv',
+                          encoding='utf8-lossy')
 
 # Data imputation
 
