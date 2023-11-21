@@ -38,3 +38,5 @@ streamlit run app.py
 - Python 3.11 or greater
 - Git (to clone the repo)
 #
+# Not Supported
+At the moment, there's a [bug while loading h5 keras models on Windows created on macOS/Linux](https://github.com/keras-team/keras/issues/18528). You may encounter this bug when running the Streamlit app directly on Windows right after cloning the repo if you don't run the Jupyter Notekbook first. The workaround is to run the Streamlit app from [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), or running the Jupyter Notebook on Windows first (which will create new model files that don't have the issue on Windows) before running the Streamlit app.
