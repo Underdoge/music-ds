@@ -29,6 +29,7 @@ pip install -r requirements.txt
 ```
 #
 # Running the Streamlit App
+### Running the program on macOS / Linux
 ```sh
 streamlit run app.py
 ```
