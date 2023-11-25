@@ -279,7 +279,7 @@ st.plotly_chart(fig_2, theme=None)
 
 st.markdown(
     """
-### Modeling Part 2
+### Dataset 3 - Music Genre Classification Model
 Finally, the music streaming company wanted to automatically classify new
 songs in their library according to their genre.
 
@@ -333,7 +333,7 @@ model = load_model('models/genre_prediction.h5')
 
 st.markdown(
     """
-### Dataset 3 - Music Genre Classification Model
+### Modeling Part 2
 We built a genre classification neural network model and trained it using the
 sample songs of each genre.
 
