@@ -1,26 +1,31 @@
-"""
-This is a streamlit app that will showcase an hypothetical use case for the
+"""Streamlit app code.
+
+This Streamlit app will showcase an hypothetical use case for the
 'music_size.joblib' and 'genre_prediction.joblib' models under the 'models'
 folder.
 """
-import streamlit as st
+import numpy as np
+import plotly.express as px
 import polars as pl
-from tensorflow.keras.models import load_model
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import ConfusionMatrixDisplay
+import streamlit as st
 from joblib import load
-from util.on_change import update_slider, update_numin
-from util.scaler import scale
-from util.altair_charts import top_10_genres_chart
-from util.altair_charts import top_10_avg_durations_by_genre
-from util.altair_charts import songs_per_year, songs_by_bitrate
-from util.altair_charts import top_5_genre_count_per_avg_bitrate
-from util.altair_charts import top_10_most_played_songs
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.models import load_model
+
+from util.altair_charts import (
+    songs_by_bitrate,
+    songs_per_year,
+    top_5_genre_count_per_avg_bitrate,
+    top_10_avg_durations_by_genre,
+    top_10_genres_chart,
+    top_10_most_played_songs,
+)
 from util.data_imputation import data_imputation
 from util.genre_prediction import pick_random_song
-import plotly.express as px
-import numpy as np
+from util.on_change import update_numin, update_slider
+from util.scaler import scale
 
 # "st.session_state object:", st.session_state
 
@@ -359,7 +364,7 @@ fig = px.line(
     x=epochs,
     y=accuracy,
     title='Training History',
-    labels=dict(x='Epochs', y='Accuracy')
+    labels={'x': 'Epochs', 'y': 'Accuracy'}
 )
 
 st.plotly_chart(fig)
@@ -379,7 +384,7 @@ fig2 = px.line(
     x=epochs2,
     y=loss,
     title='Loss',
-    labels=dict(x='Epochs', y='Loss')
+    labels={'x': 'Epochs', 'y': 'Loss'}
 )
 
 st.plotly_chart(fig2)
