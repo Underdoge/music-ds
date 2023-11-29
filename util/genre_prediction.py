@@ -1,13 +1,14 @@
 """ This module contains the 'feature_extraction' and 'pick_random_song'
 functions for our streamlit app.
 """
-import librosa
-from keras import Sequential
-import numpy as np
-from numpy import mean, var, array
-import streamlit as st
-import random
 import os
+import random
+
+import librosa
+import numpy as np
+import streamlit as st
+from keras import Sequential
+from numpy import array, mean, var
 from sklearn.preprocessing import StandardScaler
 
 
@@ -72,7 +73,7 @@ def pick_random_song(model: Sequential,
         labels (list): A list with the sample songs' genres.
     """
     filepaths = []
-    for dirpath, dirnames, filenames in os.walk('data/genres_original'):
+    for dirpath, _dirnames, filenames in os.walk('data/genres_original'):
         for filename in filenames:
             if filename != '.DS_Store' and filename != 'desktop.ini':
                 filepaths.append(

@@ -1,18 +1,17 @@
 """ This module defines the 'scale' function to transform the 'Total Time'
-    column of a Polars DataFrame, leaving the 'Bit Rate' column intact.
+column of a Polars DataFrame, leaving the 'Bit Rate' column intact.
 """
 
+from numpy import ndarray
+from polars import DataFrame
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import RobustScaler
-from polars import DataFrame
-from numpy import ndarray
 
 
 def scale(df: DataFrame) -> ndarray:
-    """
-    This function takes a Polars Dataframe with a "Total Time" and "Bit Rate"
-    columns and transforms the "Total Time" one using a RobutScaler.
+    """ This function takes a Polars Dataframe with a "Total Time" and
+    "Bit Rate" columns and transforms the "Total Time" one using a RobutScaler.
 
     Since scikit-learn doesn't support Polars DataFrames direclty because of
     their lack of indexes/iloc methods, we convert the Polars DataFrame

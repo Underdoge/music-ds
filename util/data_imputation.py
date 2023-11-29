@@ -1,5 +1,4 @@
-"""
-This module contains the 'data_imputation' function that cleans up the
+""" This module contains the 'data_imputation' function that cleans up the
 provided dataframe.
 """
 import polars as pl

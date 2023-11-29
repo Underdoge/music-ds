@@ -1,14 +1,16 @@
 """ This module includes all the functions used to generate the charts in in
 Jupyter Notebook to be used in the streamlit app.
 """
-import polars as pl
 import altair as alt
+import polars as pl
 from altair import Chart
 from polars import DataFrame
 
 
 def top_10_genres_chart(songs_df: DataFrame) -> Chart:
-    """ This function returns an altair Chart of the top 10 genres with most
+    """Top 10 genres chart.
+
+    This function returns an altair Chart of the top 10 genres with most
     songs.
 
     Args:
@@ -18,7 +20,6 @@ def top_10_genres_chart(songs_df: DataFrame) -> Chart:
     Returns:
         Chart: The generated altair chart.
     """
-
     songs_by_genre = songs_df.select(
         pl.col('Genre')
     ).to_series().value_counts()
@@ -43,7 +44,7 @@ def top_10_genres_chart(songs_df: DataFrame) -> Chart:
 
 
 def top_10_avg_durations_by_genre(songs_df: DataFrame) -> Chart:
-    """ This function returns an altair Chart of the top 10 average song
+    """ Return an altair Chart of the top 10 average song
     durations by genre.
 
     Args:
@@ -53,7 +54,6 @@ def top_10_avg_durations_by_genre(songs_df: DataFrame) -> Chart:
     Returns:
         Chart: The generated altair chart.
     """
-
     avg_duration_per_genre = songs_df.group_by('Genre').agg(
         (pl.mean('Total Time')/60000).round(1).alias('Minutes')
     )
