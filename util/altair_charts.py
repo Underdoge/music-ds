@@ -152,7 +152,7 @@ def songs_by_bitrate(songs_df: DataFrame) -> Chart:
     """
 
     songs_by_bitrate = songs_df.group_by('Bit Rate').agg(
-        (pl.count('Name').alias('Count'))
+        pl.count('Name').alias('Count')
     ).select(pl.col('Bit Rate').alias('Bitrate'), pl.col('Count'))
     top_5_bitrates = songs_by_bitrate.top_k(5, by="Count")
     return alt.Chart(
@@ -178,7 +178,7 @@ def top_5_genre_count_per_avg_bitrate(songs_df: DataFrame) -> Chart:
     """
 
     avg_bitrate_per_genre = songs_df.group_by('Genre').agg(
-        (pl.mean('Bit Rate').alias('Average Bit Rate'))
+        pl.mean('Bit Rate').alias('Average Bit Rate')
     )
     top_5_bitrates_per_genre = avg_bitrate_per_genre.group_by(
         'Average Bit Rate').agg(
@@ -199,7 +199,7 @@ def top_10_most_played_songs(scrobbles_df: DataFrame) -> Chart:
     songs.
 
     Args:
-        songs_df (DataFrame): A polars DataFrame containing a time series
+        scrobbles_df (DataFrame): A polars DataFrame containing a time series
     of every times a song was played.
 
     Returns:
