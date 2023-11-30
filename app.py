@@ -280,6 +280,69 @@ fig_2 = px.scatter_3d(
 
 st.plotly_chart(fig_2, theme=None)
 
+st.markdown(
+    """
+###
+Finally, here's how our model predicts all possible values within the ranges of
+our dataset, from the minimum to the maximum values of the durations and bit
+rates.
+"""
+)
+
+# Generate 100 values between minimum and maximum durations and bitrates
+
+min_bit_rate = songs_df.select(pl.col('Bit Rate').min()).to_numpy()[0][0]
+max_bit_rate = songs_df.select(pl.col('Bit Rate').max()).to_numpy()[0][0]
+min_duration = int(
+    songs_df.select(pl.col('Total Time').min()).to_numpy()[0][0]/1000)
+max_duration = int(
+    songs_df.select(pl.col('Total Time').max()).to_numpy()[0][0]/1000)
+bitrate_vals = np.linspace(min_bit_rate, max_bit_rate, 100)
+duration_vals = np.linspace(min_duration, max_duration, 100)
+
+# Create a grid combining all values
+
+xy = np.meshgrid(duration_vals, bitrate_vals)
+zz = np.array(list(zip(*(x.flat for x in xy))))
+
+# Create dataframe with new values
+
+plot_values = pl.DataFrame(zz).rename({"column_0": "Total Time", "column_1": "Bit Rate"})
+
+# Scale Total Time
+
+scaled_plot_values = scale(plot_values)
+
+# predict new Size values and store them in a new DataFrame
+
+predicted_y = model.predict(scaled_plot_values)
+
+prediction_y_df = pl.DataFrame({"Size": np.concatenate(predicted_y)}).select(
+    pl.col("Size").cast(pl.Int64)
+)
+
+# Remove negative Sizes
+
+data = plot_values.with_columns(
+    prediction_y_df).rename({'Total Time': 'Duration'}).select(
+    pl.col('Duration').filter(pl.col('Size') > 0),
+    pl.col('Bit Rate').filter(pl.col('Size') > 0),
+    pl.col('Size').filter(pl.col('Size') > 0)
+)
+
+# Plot result
+
+fig_3 = px.scatter_3d(
+    data,
+    x='Duration',
+    y='Bit Rate',
+    z='Size',
+    color='Size'
+)
+fig_3.update_layout(scene=dict(camera=dict(eye=dict(x=1.5, y=1, z=1.5))))
+
+st.plotly_chart(fig_3, theme=None)
+
 # Music Genre Classification
 
 st.markdown(
