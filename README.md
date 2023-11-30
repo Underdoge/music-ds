@@ -39,8 +39,8 @@ streamlit run app.py
 - Git (to clone the repo)
 #
 # Dataset Sources
-- My Winamp's music library's Media Library Export - can be found under data/music_library_export.xml
-- My Last.fm account's scrobbles (time series of when each song was played) extracted from [here](https://lastfm.ghan.nl/export/) - can be found under data/lastfm-scrobbles-edchapa.csv
+- My Winamp music library's Media Library Export - can be found under data/music_library_export.xml
+- My [Last.fm account](https://www.last.fm/user/edchapa)'s scrobbles (time series of when each song was played) extracted from [here](https://lastfm.ghan.nl/export/) - can be found under data/lastfm-scrobbles-edchapa.csv
 - [GTZAN Dataset - Music Genre Classification](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) from Kaggle.
 #
 # Not Supported
