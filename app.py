@@ -283,7 +283,7 @@ st.plotly_chart(fig_2, theme=None)
 st.markdown(
     """
 ###
-Finally, here's how our model predicts all possible values within the ranges of
+And now, here's how our model predicts all possible values within the ranges of
 our dataset, from the minimum to the maximum values of the durations and bit
 rates.
 """
