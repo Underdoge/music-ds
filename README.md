@@ -34,6 +34,9 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 #
+# Hosted Streamlit App
+A hosted version of the app can be found on Streamlit [here](https://music-ds.streamlit.app).
+#
 # Requirements
 - Python 3.11 or greater
 - Git (to clone the repo)
