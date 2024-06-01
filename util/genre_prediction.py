@@ -48,7 +48,7 @@ def feature_extraction(filename: str) -> array:
     all_features.append(mean(perceptr))
     all_features.append(var(perceptr))
     features, _ = librosa.beat.beat_track(y=y, sr=sr)
-    all_features.append(features)
+    all_features.append(features[0])
     # n_mfcc = number of MFCCs to return, using 20 to match
     # the features_x_sec.csv files
     features = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20)
